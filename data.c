@@ -1,3 +1,4 @@
+#include "data.h"
 #include "command.h"
 
 #define FRAME 33
