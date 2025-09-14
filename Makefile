@@ -2,7 +2,7 @@ objects = main.o miniaudio.o ascii.o audio.o command.o data.o screen.o
 bin = still_alive
 
 CC = gcc
-LDLIBS = -lcurses
+LDLIBS = -lcurses -lm
 
 $(bin): $(objects)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDLIBS)

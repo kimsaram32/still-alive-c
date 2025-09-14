@@ -23,7 +23,7 @@ typedef struct
 }
 command_t;
 
-command_ms_t command_last_time;
+extern command_ms_t command_last_time;
 
 void command_init(void);
 int command_done(void);
