@@ -7,6 +7,8 @@
 
 #define COMMAND_MAX_SIZE 2000
 
+command_ms_t command_last_time;
+
 static command_t commands[COMMAND_MAX_SIZE];
 static int commands_length = 0;
 

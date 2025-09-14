@@ -8,7 +8,7 @@ typedef enum
 }
 audio_result_t;
 
-audio_result_t audio_init(void);
+audio_result_t audio_init(char *audio_file_name);
 void audio_play(void);
 void audio_cleanup(void);
 

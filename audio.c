@@ -4,11 +4,11 @@
 static ma_engine engine;
 static ma_sound music;
 
-audio_result_t audio_init(void)
+audio_result_t audio_init(char *audio_file_name)
 {
   if (ma_engine_init(NULL, &engine) != MA_SUCCESS)
     return AUDIO_FAILURE;
-  if (ma_sound_init_from_file(&engine, "still_alive.mp3", 0, NULL, NULL, &music) != MA_SUCCESS)
+  if (ma_sound_init_from_file(&engine, audio_file_name, 0, NULL, NULL, &music) != MA_SUCCESS)
   {
     audio_cleanup();
     return AUDIO_FAILURE;

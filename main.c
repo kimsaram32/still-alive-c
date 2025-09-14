@@ -5,9 +5,11 @@
 #include "screen.h"
 #include "data.h"
 
-int main(void)
+int main(int argc, char **argv)
 {
-  if (audio_init() != AUDIO_SUCCESS)
+  char *audio_file_name = argc == 2 ? argv[1] : "still_alive.mp3";
+
+  if (audio_init(audio_file_name) != AUDIO_SUCCESS)
   {
     printf("failed to initialize audio\n");
     return 1;
