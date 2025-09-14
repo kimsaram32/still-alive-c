@@ -1,17 +1,24 @@
 #include <stdio.h>
-#include "miniaudio.h"
+#include <ncurses.h>
+#include "audio.h"
 #include "command.h"
+#include "screen.h"
 #include "data.h"
 
 int main(void)
 {
-  ma_engine engine;
-  if (ma_engine_init(NULL, &engine) != MA_SUCCESS)
+  if (audio_init() != AUDIO_SUCCESS)
   {
-    printf("failed to initialize audio engine.\n");
+    printf("failed to initialize audio\n");
     return 1;
   }
-  ma_engine_play_sound(&engine, "still_alive.mp3", NULL);
+  printf("initialized audio\n");
+
+  if (screen_init() != SCREEN_SUCCESS)
+  {
+    printf("failed to initialize screen\n");
+    return 1;
+  }
 
   command_init();
   data_init();
@@ -19,6 +26,8 @@ int main(void)
   while (!command_done())
     command_process();
 
-  ma_engine_uninit(&engine);
+  audio_cleanup();
+  screen_cleanup();
+
   return 0;
 }

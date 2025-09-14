@@ -1,9 +1,10 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
+#include "audio.h"
+#include "screen.h"
 #include "command.h"
 
-#define ESC "\x1B["
 #define COMMAND_MAX_SIZE 2000
 
 static command_t commands[COMMAND_MAX_SIZE];
@@ -24,7 +25,6 @@ void command_init(void)
 {
   start_time = get_current_time();
   current_command_index = 0;
-  fputs(ESC"H"ESC"2J", stdout);
 }
 
 int command_done(void)
@@ -46,13 +46,16 @@ void command_process(void)
     switch (cmd.type)
     {
       case COMMAND_TYPE_CHAR:
-        fputc(cmd.c, stdout);
+        screen_lyrics_put_char(cmd.c);
         break;
       case COMMAND_TYPE_PIC:
-        // todo
+        screen_pic_set(cmd.pic);
         break;
       case COMMAND_TYPE_CLEAR:
-        fputs(ESC"H"ESC"2J", stdout);
+        screen_lyrics_clear();
+        break;
+      case COMMAND_TYPE_AUDIO:
+        audio_play();
         break;
     }
   }
@@ -73,7 +76,7 @@ void command_add_chars(char *s, command_ms_t start, command_ms_t delay)
   command_last_time = target_time;
 }
 
-void command_add_pic(char *pic, command_ms_t time)
+void command_add_pic(const char *pic, command_ms_t time)
 {
   commands[commands_length].type = COMMAND_TYPE_PIC;
   commands[commands_length].target_time = time;
@@ -83,11 +86,10 @@ void command_add_pic(char *pic, command_ms_t time)
   command_last_time = time;
 }
 
-void command_add_clear(command_ms_t time)
+void command_add(command_type_t type, command_ms_t time)
 {
-  commands[commands_length].type = COMMAND_TYPE_CLEAR;
+  commands[commands_length].type = type;
   commands[commands_length].target_time = time;
-
   commands_length++;
   command_last_time = time;
 }
